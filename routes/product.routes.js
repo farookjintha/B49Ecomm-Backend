@@ -9,6 +9,7 @@ const {
   deleteProduct,
 } = require("../controllers/products.controller");
 const { isAuth } = require("../utils/authentication");
+const { isSellerAccess } = require("../utils/authorization");
 
 // To retrieve all products
 router.get("/products", getAllProducts);
@@ -17,12 +18,12 @@ router.get("/products", getAllProducts);
 router.get("/products/:productId", getProductById);
 
 // To Add a new product
-router.post("/products", isAuth, addProduct);
+router.post("/products", isAuth, isSellerAccess, addProduct);
 
 // To update a product
-router.put("/products/:productId", isAuth, updateProduct);
+router.put("/products/:productId", isAuth, isSellerAccess, updateProduct);
 
 // To delete a product
-router.delete("/products/:productId", isAuth, deleteProduct);
+router.delete("/products/:productId", isAuth, isSellerAccess, deleteProduct);
 
 module.exports = router;

@@ -9,6 +9,7 @@ const {
   updateCategory,
   deleteCategory,
 } = require("../controllers/categories.controller");
+const { isAdminAccess } = require("../utils/authorization");
 
 // To retrieve all products
 router.get("/categories", getAllCategories);
@@ -17,12 +18,12 @@ router.get("/categories", getAllCategories);
 router.get("/categories/:categoryId", getCategoryById);
 
 // To Add a new product
-router.post("/categories", isAuth, addCategory);
+router.post("/categories", isAuth, isAdminAccess, addCategory);
 
 // To update a product
-router.put("/categories/:categoryId", isAuth, updateCategory);
+router.put("/categories/:categoryId", isAuth, isAdminAccess, updateCategory);
 
 // To delete a product
-router.delete("/categories/:categoryId", isAuth, deleteCategory);
+router.delete("/categories/:categoryId", isAuth, isAdminAccess, deleteCategory);
 
 module.exports = router;

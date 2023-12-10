@@ -4,6 +4,8 @@ const isAuth = async (req, res, next) => {
   const { cookies } = req;
 
   if (cookies.accessToken) {
+    // jwt.verify() -> converting token into obj with secret key;
+
     // Decryption: random form to original form
     const userObj = await jwt.verify(
       cookies.accessToken,
@@ -27,3 +29,5 @@ const isAuth = async (req, res, next) => {
 };
 
 module.exports = { isAuth };
+
+// AUTHENTICATION: whether this user access our application or not -> Can Sign in or not

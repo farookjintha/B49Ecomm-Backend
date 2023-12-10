@@ -18,7 +18,7 @@ const signup = async (req, res) => {
       return res.status(400).send({ message: "Password is required" });
     }
 
-    const hashedValue = await bcrypt.hash(payload.password, 15);
+    const hashedValue = await bcrypt.hash(payload.password, 15); // 15 -> salting rounds
 
     payload.hashedPassword = hashedValue;
     //   {
@@ -68,6 +68,8 @@ const signin = async (req, res) => {
     // checking if user exists or not
     const existingUser = await Users.findOne({ email: email });
 
+    console.log("Existing USer: ", existingUser);
+
     // if user doesnt exist
     if (!existingUser) {
       return res.status(400).send({
@@ -85,7 +87,15 @@ const signin = async (req, res) => {
     }
 
     // if credentials are valid, jwt token has been generated.
+    // jsonwebtoken -> json obj is converted into a random string (token)
     // Encryption: orignal form to random form
+
+    // jwt.sign() -> Converting Obj to Token
+    // {
+    //   _id: 'asdadadad'
+    // }
+
+    // ssvsfsfwrtw4rtwfsafasfa with secret key
     const token = await jwt.sign(
       { _id: existingUser._id },
       process.env.SECRET_KEY
@@ -121,3 +131,10 @@ const signout = async (req, res) => {
 };
 
 module.exports = { signup, signin, signout };
+
+// SIGN IN
+// 1. email and password from request body
+// 2. email exists or not.
+// 3. credentials check if email exists.
+// 4. if valid credentials, token(jwt) generation and setting the token in cookie
+// 5. error if credentials are not valid.
